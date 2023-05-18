@@ -5,17 +5,17 @@ enum EventsStatus { initial, success, failure }
 final class EventsState extends Equatable {
   const EventsState({
     this.status = EventsStatus.initial,
-    this.data = const <Model>[],
+    this.data = const <Data>[],
     this.hasReachedMax = false,
   });
 
   final EventsStatus status;
-  final List<Model> data;
+  final List<Data> data;
   final bool hasReachedMax;
 
   EventsState copyWith({
     EventsStatus? status,
-    List<Model>? data,
+    List<Data>? data,
     bool? hasReachedMax,
   }) {
     return EventsState(

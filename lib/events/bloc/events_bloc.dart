@@ -6,13 +6,15 @@ import 'package:bloc_concurrency/bloc_concurrency.dart';
 import 'package:equatable/equatable.dart';
 import 'package:http/http.dart' as http;
 import 'package:stream_transform/stream_transform.dart';
-import 'package:tif_assignment/events/models/model.dart';
+import 'package:tif_assignment/constants/constants.dart';
+import 'package:tif_assignment/events/models/data.dart';
+
+import '../models/model.dart';
 
 part 'events_state.dart';
 
 part 'events_event.dart';
 
-const _postLimit = 20;
 const throttleDuration = Duration(milliseconds: 100);
 
 EventTransformer<E> throttleDroppable<E>(Duration duration) {
@@ -21,8 +23,8 @@ EventTransformer<E> throttleDroppable<E>(Duration duration) {
   };
 }
 
-class PostBloc extends Bloc<EventsEvent, EventsState> {
-  PostBloc({required this.httpClient}) : super(const EventsState()) {
+class EventsBloc extends Bloc<EventsEvent, EventsState> {
+  EventsBloc({required this.httpClient}) : super(const EventsState()) {
     on<EventsFetched>(
       _onPostFetched,
       transformer: throttleDroppable(throttleDuration),
@@ -47,46 +49,34 @@ class PostBloc extends Bloc<EventsEvent, EventsState> {
           ),
         );
       }
-      final posts = await _fetchPosts(state.data.length);
-      posts.isEmpty
-          ? emit(state.copyWith(hasReachedMax: true))
-          : emit(
-              state.copyWith(
-                status: EventsStatus.success,
-                data: List.of(state.data)..addAll(posts),
-                hasReachedMax: false,
-              ),
-            );
+      final posts = await _fetchPosts();
+      if (state.data.length < 13) {
+        emit(
+          state.copyWith(
+            status: EventsStatus.success,
+            data: List.of(state.data)..addAll(posts),
+            hasReachedMax: false,
+          ),
+        );
+      }
     } catch (_) {
+      print(_);
       emit(state.copyWith(status: EventsStatus.failure));
     }
   }
 
-  Future<List<Model>> _fetchPosts([int startIndex = 0]) async {
+  Future<List<Data>> _fetchPosts() async {
     final response = await httpClient.get(
       Uri.https(
-        'jsonplaceholder.typicode.com',
-        '/posts',
-        <String, String>{'_start': '$startIndex', '_limit': '$_postLimit'},
+        Constants.endPoint,
+        Constants.eventPageLink,
       ),
     );
     if (response.statusCode == 200) {
-      final body = json.decode(response.body) as List;
-      return body.map((dynamic json) {
-        final map = json as Map<String, dynamic>;
-        return Model(
-          id: map['id'] as int,
-          title: map['title'] as String,
-          description: map['description'] as String,
-          bannerImage: map['banner_image'] as String,
-          dateTime: map['date_time'] as String,
-          organizerName: map['organizer_name'] as String,
-          organizerIcon: map['organizer_icon'] as String,
-          venueName: map['venue_name'] as String,
-          venueCity: map['venue_city'] as String,
-          venueCountry: map['venue_country'] as String,
-        );
-      }).toList();
+      final body = json.decode(response.body);
+      // Content content = Content.fromJson(body);
+      Model model = Model.fromJson(body);
+      return model.content.data;
     }
     throw Exception('Error fetching posts');
   }

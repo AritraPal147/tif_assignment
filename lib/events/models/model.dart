@@ -1,44 +1,15 @@
-import 'dart:core';
+import 'package:tif_assignment/events/models/content.dart';
 
-import 'package:equatable/equatable.dart';
+class Model {
+  Content content;
+  bool status;
 
-final class Model extends Equatable {
-  const Model({
-    required this.id,
-    required this.title,
-    required this.description,
-    required this.bannerImage,
-    required this.dateTime,
-    required this.organizerName,
-    required this.organizerIcon,
-    required this.venueName,
-    required this.venueCity,
-    required this.venueCountry,
-  });
+  Model({required this.content, required this.status});
 
-  final int id;
-  final String title;
-  final String description;
-  final String bannerImage;
-  final String dateTime;
-  final String organizerName;
-  final String organizerIcon;
-  final String venueName;
-  final String venueCity;
-  final String venueCountry;
-
-  @override
-// TODO: implement props
-  List<Object?> get props => [
-        id,
-        title,
-        description,
-        bannerImage,
-        dateTime,
-        organizerName,
-        organizerIcon,
-        venueName,
-        venueCity,
-        venueCountry,
-      ];
+  factory Model.fromJson(Map<String, dynamic> json) {
+    return Model(
+      content: Content.fromJson(json['content']),
+      status: json['status'],
+    );
+  }
 }
