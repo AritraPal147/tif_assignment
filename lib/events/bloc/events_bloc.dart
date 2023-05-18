@@ -7,9 +7,9 @@ import 'package:equatable/equatable.dart';
 import 'package:http/http.dart' as http;
 import 'package:stream_transform/stream_transform.dart';
 import 'package:tif_assignment/constants/constants.dart';
-import 'package:tif_assignment/events/models/data.dart';
+import 'package:tif_assignment/models/data.dart';
 
-import '../models/model.dart';
+import '../models/model_events.dart';
 
 part 'events_state.dart';
 
@@ -26,46 +26,45 @@ EventTransformer<E> throttleDroppable<E>(Duration duration) {
 class EventsBloc extends Bloc<EventsEvent, EventsState> {
   EventsBloc({required this.httpClient}) : super(const EventsState()) {
     on<EventsFetched>(
-      _onPostFetched,
+      _onEventsFetched,
       transformer: throttleDroppable(throttleDuration),
     );
   }
 
   final http.Client httpClient;
 
-  Future<void> _onPostFetched(
+  Future<void> _onEventsFetched(
     EventsFetched event,
     Emitter<EventsState> emit,
   ) async {
     if (state.hasReachedMax) return;
     try {
       if (state.status == EventsStatus.initial) {
-        final posts = await _fetchPosts();
+        final events = await _fetchEvents();
         return emit(
           state.copyWith(
             status: EventsStatus.success,
-            data: posts,
+            data: events,
             hasReachedMax: false,
           ),
         );
       }
-      final posts = await _fetchPosts();
+      final events = await _fetchEvents();
       if (state.data.length < 13) {
         emit(
           state.copyWith(
             status: EventsStatus.success,
-            data: List.of(state.data)..addAll(posts),
+            data: List.of(state.data)..addAll(events),
             hasReachedMax: false,
           ),
         );
       }
     } catch (_) {
-      print(_);
       emit(state.copyWith(status: EventsStatus.failure));
     }
   }
 
-  Future<List<Data>> _fetchPosts() async {
+  Future<List<Data>> _fetchEvents() async {
     final response = await httpClient.get(
       Uri.https(
         Constants.endPoint,
@@ -74,10 +73,9 @@ class EventsBloc extends Bloc<EventsEvent, EventsState> {
     );
     if (response.statusCode == 200) {
       final body = json.decode(response.body);
-      // Content content = Content.fromJson(body);
-      Model model = Model.fromJson(body);
+      ModelEvents model = ModelEvents.fromJson(body);
       return model.content.data;
     }
-    throw Exception('Error fetching posts');
+    throw Exception(Constants.errorText);
   }
 }

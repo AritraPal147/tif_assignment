@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tif_assignment/constants/constants.dart';
 import 'package:tif_assignment/events/bloc/events_bloc.dart';
-import 'package:tif_assignment/events/models/size_config.dart';
+import 'package:tif_assignment/models/size_config.dart';
 
 import '../widgets/events_list_item.dart';
 
@@ -32,7 +32,7 @@ class _EventsListState extends State<EventsList> {
             return const Center(child: Text(Constants.failureText));
           case EventsStatus.success:
             if (state.data.isEmpty) {
-              return const Center(child: Text(Constants.noPostsText));
+              return const Center(child: Text(Constants.noDataText));
             }
             return ListView.builder(
               itemBuilder: (BuildContext context, int index) {

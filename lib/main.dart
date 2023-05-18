@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:tif_assignment/events/view/home_screen.dart';
 import 'package:tif_assignment/simple_bloc_observer.dart';
 
+import 'details/view/details_screen.dart';
+
 void main() {
   Bloc.observer = const SimpleBlocObserver();
   runApp(MaterialApp(
@@ -12,7 +14,7 @@ void main() {
     initialRoute: '/',
     routes: {
       '/': (context) => const HomePage(),
-      // '/details': (context) => const DetailsScreen(),
+      '/details': (context) => const DetailsScreen(),
       // '/search': (context) => const SearchScreen(),
     },
   ),);

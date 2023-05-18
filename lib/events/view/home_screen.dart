@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tif_assignment/constants/constants.dart';
 import 'package:tif_assignment/events/bloc/events_bloc.dart';
 import 'package:http/http.dart' as http;
-import 'package:tif_assignment/events/models/size_config.dart';
+import 'package:tif_assignment/models/size_config.dart';
 
 import 'events_list.dart';
 
@@ -12,6 +12,7 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    SizeConfig().init(context);
     return SafeArea(
       child: Scaffold(
         appBar: PreferredSize(

@@ -4,9 +4,10 @@ class Constants {
   static const String endPoint = 'sde-007.api.assignment.theinternetfolks.works';
   static const String eventPageLink = '/v1/event';
 
-  static const String failureText = 'Failed to fetch posts';
-  static const String noPostsText = 'No Posts';
+  static const String failureText = 'Failed to fetch data';
+  static const String noDataText = 'No Data';
   static const String events = 'Events';
+  static const String errorText = 'Error fetching data';
 
   static const Color blueTextColor = Color(0xff5669ff);
   static const Color blackTextColor = Color(0xff120d26);

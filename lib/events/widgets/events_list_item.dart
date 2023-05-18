@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:tif_assignment/constants/constants.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:tif_assignment/events/models/size_config.dart';
+import 'package:tif_assignment/models/size_config.dart';
 
-import '../models/data.dart';
+import '../../models/data.dart';
 
 class EventsListItem extends StatelessWidget {
   const EventsListItem({required this.model, super.key});
@@ -16,7 +16,7 @@ class EventsListItem extends StatelessWidget {
       child: ListTile(
         tileColor: Colors.white,
         // TODO: Implement onTap
-        onTap: null,
+        onTap: () => Navigator.pushNamed(context, '/details', arguments: {'id': model.id}),
         visualDensity: const VisualDensity(vertical: 4, horizontal: 2),
         minVerticalPadding: SizeConfig.blockSizeVertical * 1.5,
         leading: SizedBox(
