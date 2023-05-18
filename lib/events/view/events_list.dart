@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tif_assignment/constants/constants.dart';
 import 'package:tif_assignment/events/bloc/events_bloc.dart';
+import 'package:tif_assignment/events/models/size_config.dart';
 
 import '../widgets/events_list_item.dart';
 
@@ -23,6 +24,7 @@ class _EventsListState extends State<EventsList> {
 
   @override
   Widget build(BuildContext context) {
+    SizeConfig().init(context);
     return BlocBuilder<EventsBloc, EventsState>(
       builder: (context, state) {
         switch (state.status) {
