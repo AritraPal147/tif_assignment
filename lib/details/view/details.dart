@@ -23,9 +23,13 @@ class _DetailsState extends State<Details> {
             if (state.data == null) {
               return const Center(child: Text(Constants.noDataText));
             }
-            return DetailsDataWidget();
+            return const DetailsDataWidget();
           case DetailsStatus.initial:
-            return const Center(child: CircularProgressIndicator());
+            if (state.data == null) {
+              return const Center(child: Text(Constants.noDataText));
+            }
+            return const DetailsDataWidget();
+            // return const Center(child: CircularProgressIndicator());
         }
       },
     );

@@ -15,9 +15,9 @@ part 'details_state.dart';
 class DetailsBloc extends Bloc<DetailsEvent, DetailsState> {
   DetailsBloc({required this.httpClient, required this.id})
       : super(const DetailsState()) {
-    on<DetailsFetched>((event, emit) {
-      _onDetailsFetched;
-    });
+    on<DetailsFetched>(
+      _onDetailsFetched,
+    );
   }
 
   final http.Client httpClient;

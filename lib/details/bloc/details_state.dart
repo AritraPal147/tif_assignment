@@ -28,5 +28,5 @@ final class DetailsState extends Equatable {
 
   @override
   // TODO: implement props
-  List<Object?> get props => [status, data];
+  List<Object> get props => [status, data!];
 }

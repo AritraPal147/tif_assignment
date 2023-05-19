@@ -55,7 +55,7 @@ class EventsBloc extends Bloc<EventsEvent, EventsState> {
           state.copyWith(
             status: EventsStatus.success,
             data: List.of(state.data)..addAll(events),
-            hasReachedMax: false,
+            hasReachedMax: true,
           ),
         );
       }

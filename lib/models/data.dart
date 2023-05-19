@@ -14,6 +14,20 @@ final class Data {
     required this.venueCountry,
   });
 
+  const Data.fromDefault({
+    this.id = 1,
+    this.title = 't',
+    this.description = 'd',
+    this.bannerImage = 'bi',
+    this.dateTime = 'dt',
+    this.organizerName = 'on',
+    this.organizerIcon = 'oi',
+    this.venueName = 'vn',
+    this.venueCity = 'vc',
+    this.venueCountry = 'vc',
+  });
+
+
   final int id;
   final String title;
   final String description;
